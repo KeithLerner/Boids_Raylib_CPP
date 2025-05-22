@@ -1,5 +1,8 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.11.35312.102
+MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "HelloWorld_CPP", "HelloWorld_CPP.vcxproj", "{37C7FF43-308A-4792-86A0-8312F0BADE9E}"
 EndProject
 Global
@@ -12,11 +15,14 @@ Global
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{37C7FF43-308A-4792-86A0-8312F0BADE9E}.Debug|Win32.ActiveCfg = Debug|Win32
 		{37C7FF43-308A-4792-86A0-8312F0BADE9E}.Debug|Win32.Build.0 = Debug|Win32
-		{37C7FF43-308A-4792-86A0-8312F0BADE9E}.Debug|x64.ActiveCfg = Debug|x64
-		{37C7FF43-308A-4792-86A0-8312F0BADE9E}.Debug|x64.Build.0 = Debug|x64
+		{37C7FF43-308A-4792-86A0-8312F0BADE9E}.Debug|x64.ActiveCfg = Debug|Win32
+		{37C7FF43-308A-4792-86A0-8312F0BADE9E}.Debug|x64.Build.0 = Debug|Win32
 		{37C7FF43-308A-4792-86A0-8312F0BADE9E}.Release|Win32.ActiveCfg = Release|Win32
 		{37C7FF43-308A-4792-86A0-8312F0BADE9E}.Release|Win32.Build.0 = Release|Win32
 		{37C7FF43-308A-4792-86A0-8312F0BADE9E}.Release|x64.ActiveCfg = Release|x64
 		{37C7FF43-308A-4792-86A0-8312F0BADE9E}.Release|x64.Build.0 = Release|x64
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
 	EndGlobalSection
 EndGlobal
