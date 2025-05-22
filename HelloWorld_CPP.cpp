@@ -20,6 +20,7 @@ int main(int argc, char* argv[])
 
     Vector3 cubePosition = { 0.0f, 0.0f, 0.0f };
 
+
     DisableCursor();                    // Limit cursor to relative movement inside the window
 
     SetTargetFPS(60);                   // Set our game to run at 60 frames-per-second

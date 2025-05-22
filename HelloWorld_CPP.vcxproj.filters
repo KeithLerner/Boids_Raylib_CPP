@@ -18,5 +18,25 @@
     <ClCompile Include="HelloWorld_CPP.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Boid.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Bounds.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GridBins.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Boid.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Bounds.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="GridBins.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

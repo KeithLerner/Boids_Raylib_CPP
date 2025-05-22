@@ -161,7 +161,15 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Boid.cpp" />
+    <ClCompile Include="Bounds.cpp" />
+    <ClCompile Include="GridBins.cpp" />
     <ClCompile Include="HelloWorld_CPP.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Boid.h" />
+    <ClInclude Include="Bounds.h" />
+    <ClInclude Include="GridBins.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
