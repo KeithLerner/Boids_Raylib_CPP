@@ -30,6 +30,7 @@ int main(int argc, char* argv[])
 	const int spawnCount = 5000;
 
 	std::array<Vector3, spawnCount> tempBoids;
+	std::array<Boid, spawnCount> boids;
 
     for (int i = 0; i < spawnCount; i++)
     {
@@ -40,7 +41,18 @@ int main(int argc, char* argv[])
             GetRandomValue(bounds.Min().z, bounds.Max().z)
         };
 
+        Vector3 vel = 
+        {
+            GetRandomValue(-1, 1),
+            GetRandomValue(-1, 1),
+            GetRandomValue(-1, 1)
+        };
+
+        vel = Vector3Normalize(vel);
+		vel = Vector3Scale(vel, Boid::maxSpeed);
+
 		tempBoids[i] = pos;
+		boids[i] = Boid{ pos, vel};
     }
 
 
@@ -57,6 +69,16 @@ int main(int argc, char* argv[])
         UpdateCamera(&camera, CAMERA_FREE);
 
         if (IsKeyPressed('Z')) camera.target = Vector3{ 0.0f, 0.0f, 0.0f };
+
+        // Move Boids
+        for (int i = 0; i < spawnCount; i++)
+        {
+            Boid b = boids[i];
+			Vector3 pos = b.position;
+            Vector3 vel = b.velocity;
+			b.position += vel * GetFrameTime();
+			boids[i] = b;
+        }
         //----------------------------------------------------------------------------------
 
         // Draw
@@ -67,16 +89,14 @@ int main(int argc, char* argv[])
 
         BeginMode3D(camera);
 
-        //DrawCube(cubePosition, 2.0f, 2.0f, 2.0f, RED);
-        //DrawCubeWires(cubePosition, 2.0f, 2.0f, 2.0f, MAROON);
-
         for (int i = 0; i < spawnCount; i++)
         {
-			Vector3 pos = tempBoids[i];
+			Vector3 pos = boids[i].position;
 			Vector2 screenPos = GetWorldToScreen(pos, camera);
 			Vector2 screenSize = GetWorldToScreenEx(pos, camera, 10, 10);
 
-			DrawCircle3D(pos, .5f, Vector3{ 0.0f, 1.0f, 0.0f }, (float)GetTime() * 180.0f + i, BLUE);
+            DrawCircle3D(pos, .5f, Vector3{ 0.0f, 1.0f, 0.0f }, 
+                (float)GetTime() * 180.0f + i, BLUE);
         }
 
         DrawGrid(gridBins.Density(), gridBins.BinSize().x);
