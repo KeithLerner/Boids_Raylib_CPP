@@ -1,5 +1,10 @@
 #include <iostream>
-#include "C:\raylib\raylib\src\raylib.h"
+#include <array>
+#include "raylib.h"
+#include "raymath.h"
+#include "Bounds.h"
+#include "GridBins.h"
+#include "Boid.h"
 
 int main(int argc, char* argv[])
 {
@@ -20,10 +25,28 @@ int main(int argc, char* argv[])
 
     Vector3 cubePosition = { 0.0f, 0.0f, 0.0f };
 
+    Bounds bounds = { Vector3{ 0.0f, 0.0f, 0.0f }, Vector3{ 100.0f, 100.0f, 100.0f } };
+	GridBins gridBins(bounds, 10);
+	const int spawnCount = 5000;
+
+	std::array<Vector3, spawnCount> tempBoids;
+
+    for (int i = 0; i < spawnCount; i++)
+    {
+		Vector3 pos = 
+        { 
+            GetRandomValue(bounds.Min().x, bounds.Max().x), 
+            GetRandomValue(bounds.Min().y, bounds.Max().y),
+            GetRandomValue(bounds.Min().z, bounds.Max().z)
+        };
+
+		tempBoids[i] = pos;
+    }
+
 
     DisableCursor();                    // Limit cursor to relative movement inside the window
 
-    SetTargetFPS(60);                   // Set our game to run at 60 frames-per-second
+    SetTargetFPS(144);                   // Set our game to run at 60 frames-per-second
     //--------------------------------------------------------------------------------------
 
     // Main game loop
@@ -44,10 +67,19 @@ int main(int argc, char* argv[])
 
         BeginMode3D(camera);
 
-        DrawCube(cubePosition, 2.0f, 2.0f, 2.0f, RED);
-        DrawCubeWires(cubePosition, 2.0f, 2.0f, 2.0f, MAROON);
+        //DrawCube(cubePosition, 2.0f, 2.0f, 2.0f, RED);
+        //DrawCubeWires(cubePosition, 2.0f, 2.0f, 2.0f, MAROON);
 
-        DrawGrid(10, 1.0f);
+        for (int i = 0; i < spawnCount; i++)
+        {
+			Vector3 pos = tempBoids[i];
+			Vector2 screenPos = GetWorldToScreen(pos, camera);
+			Vector2 screenSize = GetWorldToScreenEx(pos, camera, 10, 10);
+
+			DrawCircle3D(pos, .5f, Vector3{ 0.0f, 1.0f, 0.0f }, (float)GetTime() * 180.0f + i, BLUE);
+        }
+
+        DrawGrid(gridBins.Density(), gridBins.BinSize().x);
 
         EndMode3D();
 
@@ -58,6 +90,8 @@ int main(int argc, char* argv[])
         DrawText("- Mouse Wheel to Zoom in-out", 40, 40, 10, DARKGRAY);
         DrawText("- Mouse Wheel Pressed to Pan", 40, 60, 10, DARKGRAY);
         DrawText("- Z to zoom to (0, 0, 0)", 40, 80, 10, DARKGRAY);
+
+        DrawFPS(10, 10);
 
         EndDrawing();
         //----------------------------------------------------------------------------------
