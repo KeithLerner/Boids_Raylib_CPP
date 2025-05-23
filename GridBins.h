@@ -6,9 +6,9 @@
 
 class GridBins
 {
-	std::vector<std::vector<Boid>> bins;
 
 private:
+	std::vector<std::vector<Boid>> bins;
 	Bounds bounds;
 	const Vector3 binSize;
 	const int binDensity = 100;
@@ -32,6 +32,11 @@ public:
 				}
 			}
 		}
+	}
+
+	std::vector<std::vector<Boid>> Bins()
+	{
+		return bins;
 	}
 
 	int Density()
@@ -62,7 +67,7 @@ public:
 		};
 	}
 
-	int BinIndexToVectorIndex(Vector3 binIndex)
+	int BinIndexToArrayIndex(Vector3 binIndex)
 	{
 		return binIndex.x +
 			binIndex.y * binDensity +

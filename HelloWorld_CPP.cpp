@@ -29,7 +29,6 @@ int main(int argc, char* argv[])
 	GridBins gridBins(bounds, 10);
 	const int spawnCount = 5000;
 
-	std::array<Vector3, spawnCount> tempBoids;
 	std::array<Boid, spawnCount> boids;
 
     for (int i = 0; i < spawnCount; i++)
@@ -51,8 +50,7 @@ int main(int argc, char* argv[])
         vel = Vector3Normalize(vel);
 		vel = Vector3Scale(vel, Boid::maxSpeed);
 
-		tempBoids[i] = pos;
-		boids[i] = Boid{ pos, vel};
+		boids[i] = Boid{ i, pos, vel};
     }
 
 
@@ -70,14 +68,41 @@ int main(int argc, char* argv[])
 
         if (IsKeyPressed('Z')) camera.target = Vector3{ 0.0f, 0.0f, 0.0f };
 
-        // Move Boids
+        // Update Boids
         for (int i = 0; i < spawnCount; i++)
-        {
-            Boid b = boids[i];
-			Vector3 pos = b.position;
-            Vector3 vel = b.velocity;
-			b.position += vel * GetFrameTime();
-			boids[i] = b;
+		{
+			Boid boid = boids[i];
+            Vector3 pos = boid.position;
+
+			Vector3 binIndex = gridBins.WorldPosToBinIndex(pos);
+			if (binIndex.x < 0) continue;
+
+			int binArrayIndex = gridBins.BinIndexToArrayIndex(binIndex);
+            std::vector<Boid> neighbors = gridBins.Bins()[binArrayIndex]; // THROWS INDEX OUT OF RANGE
+
+
+            std::vector<Vector3> searchBins = gridBins.GetNeighborBinIndices(binIndex);
+			searchBins.push_back(binIndex);
+
+            for (size_t j = 0; j < searchBins.size(); j++)
+            {
+                Vector3 bI = searchBins[j];
+				int arrayIndex = gridBins.BinIndexToArrayIndex(bI);
+
+                std::vector<Boid> binBoids = gridBins.Bins()[arrayIndex];
+                for (size_t k = 0; k < binBoids.size(); k++)
+                {
+					if (binBoids[k].id == boid.id) continue;
+
+					if (Vector3Distance(binBoids[k].position, boid.position) <= 
+                        boid.senseDistance)
+						neighbors.push_back(binBoids[k]);
+                }
+            }
+
+			// Move the boid
+			boids[i].FixToBounds(bounds);
+			boids[i].Movement(neighbors, bounds);
         }
         //----------------------------------------------------------------------------------
 
@@ -92,8 +117,6 @@ int main(int argc, char* argv[])
         for (int i = 0; i < spawnCount; i++)
         {
 			Vector3 pos = boids[i].position;
-			Vector2 screenPos = GetWorldToScreen(pos, camera);
-			Vector2 screenSize = GetWorldToScreenEx(pos, camera, 10, 10);
 
             DrawCircle3D(pos, .5f, Vector3{ 0.0f, 1.0f, 0.0f }, 
                 (float)GetTime() * 180.0f + i, BLUE);
