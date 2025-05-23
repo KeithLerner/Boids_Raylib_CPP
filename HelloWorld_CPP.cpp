@@ -25,9 +25,9 @@ int main(int argc, char* argv[])
 
     Vector3 cubePosition = { 0.0f, 0.0f, 0.0f };
 
-    Bounds bounds = { Vector3{ 0.0f, 0.0f, 0.0f }, Vector3{ 100.0f, 100.0f, 100.0f } };
-	GridBins gridBins(bounds, 10);
-	const int spawnCount = 5000;
+    Bounds bounds = { Vector3{ 0.0f, 0.0f, 0.0f }, Vector3{ 10.0f, 10.0f, 10.0f } };
+	GridBins gridBins(bounds, 2);
+	const int spawnCount = 10;
 
 	std::array<Boid, spawnCount> boids;
 
@@ -74,20 +74,16 @@ int main(int argc, char* argv[])
 			Boid boid = boids[i];
             Vector3 pos = boid.position;
 
-			Vector3 binIndex = gridBins.WorldPosToBinIndex(pos);
-			if (binIndex.x < 0) continue;
+            int binArrayIndex = gridBins.WorldPosToArrayIndex(pos);
+			if (binArrayIndex < 0) continue;
 
-			int binArrayIndex = gridBins.BinIndexToArrayIndex(binIndex);
             std::vector<Boid> neighbors = gridBins.Bins()[binArrayIndex]; // THROWS INDEX OUT OF RANGE
 
-
-            std::vector<Vector3> searchBins = gridBins.GetNeighborBinIndices(binIndex);
-			searchBins.push_back(binIndex);
+            std::vector<int> searchBins = gridBins.GetNeighborBinIndices(binArrayIndex);
 
             for (size_t j = 0; j < searchBins.size(); j++)
             {
-                Vector3 bI = searchBins[j];
-				int arrayIndex = gridBins.BinIndexToArrayIndex(bI);
+				int arrayIndex = searchBins[j];
 
                 std::vector<Boid> binBoids = gridBins.Bins()[arrayIndex];
                 for (size_t k = 0; k < binBoids.size(); k++)
@@ -100,7 +96,7 @@ int main(int argc, char* argv[])
                 }
             }
 
-			// Move the boid
+			// Update the boid's data
 			boids[i].FixToBounds(bounds);
 			boids[i].Movement(neighbors, bounds);
         }
@@ -119,7 +115,7 @@ int main(int argc, char* argv[])
 			Vector3 pos = boids[i].position;
 
             DrawCircle3D(pos, .5f, Vector3{ 0.0f, 1.0f, 0.0f }, 
-                (float)GetTime() * 180.0f + i, BLUE);
+                (float)GetTime() * (180.0f + i), BLUE);
         }
 
         DrawGrid(gridBins.Density(), gridBins.BinSize().x);

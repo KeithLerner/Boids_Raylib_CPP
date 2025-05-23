@@ -11,7 +11,7 @@ private:
 	std::vector<std::vector<Boid>> bins;
 	Bounds bounds;
 	const Vector3 binSize;
-	const int binDensity = 100;
+	const int binDensity = 10;
 
 
 public:
@@ -50,11 +50,24 @@ public:
 	}
 
 	/// <summary>
-	/// Convert a world position into a grid bin index coordinate.
+	/// Convert a world position into a grid bin array index coordinate.
 	/// </summary>
 	/// <param name="worldPosition"> The query position. </param>
-	/// <returns> -Vector3Int.one if invalid input given, otherwise returns a
-	/// valid index to a bin in the grid. </returns>
+	/// <returns> -1 if invalid input given or calculated index is outside array range, 
+	/// otherwise returns a valid index to a bin in the grid. </returns>
+	int WorldPosToArrayIndex(Vector3 worldPosition)
+	{
+		if (!bounds.Contains(worldPosition)) return -1;
+
+		int i = (int)floorf(.5f * binDensity + worldPosition.x / binSize.x) +
+			    (int)floorf(.5f * binDensity + worldPosition.y / binSize.y) * binDensity +
+			    (int)floorf(.5f * binDensity + worldPosition.z / binSize.z) * binDensity * binDensity;
+
+		if (i < 0 || i >= bins.size()) return -1;
+
+		return i;
+	}
+	/*
 	Vector3 WorldPosToBinIndex(Vector3 worldPosition)
 	{
 		if (!bounds.Contains(worldPosition)) return Vector3{ -1, -1, -1 };
@@ -66,7 +79,7 @@ public:
 			floorf(.5f * binDensity + worldPosition.z / binSize.z)
 		};
 	}
-
+	
 	int BinIndexToArrayIndex(Vector3 binIndex)
 	{
 		return binIndex.x +
@@ -89,23 +102,29 @@ public:
 
 		return Vector3{ x, y, z };
 	}
-
-	std::vector<Vector3> GetNeighborBinIndices(Vector3 index)
+	*/
+	std::vector<int> GetNeighborBinIndices(int index)
 	{
-		std::vector<Vector3> results = std::vector<Vector3>();
+		std::vector<int> results = std::vector<int>();
 
-		for (int x = index.x - 1; x <= index.x + 1; x++)
+		int ix = index % binDensity;
+		int iy = index / binDensity % binDensity;
+		int iz = index / (binDensity * binDensity);
+
+		for (int x = ix - 1; x <= ix + 1; x++)
 		{
-			for (int y = index.y - 1; y <= index.y + 1; y++)
+			for (int y = iy - 1; y <= iy + 1; y++)
 			{
-				for (int z = index.z - 1; z <= index.z + 1; z++)
+				for (int z = iz - 1; z <= iz + 1; z++)
 				{
 					// Check that modified index exists within grid space before
 					// adding to results
-					if (index.x < binDensity - 2 && index.x > 0 &&
-						index.y < binDensity - 2 && index.y > 0 &&
-						index.z < binDensity - 2 && index.z > 0)
-						results.push_back(Vector3{ (float)x, (float)y, (float)z });
+					if (x < binDensity - 2 && x > 0 &&
+						y < binDensity - 2 && y > 0 &&
+						z < binDensity - 2 && z > 0)
+						results.push_back(x + 
+							y * binDensity + 
+							z * binDensity * binDensity);
 				}
 			}
 		}
