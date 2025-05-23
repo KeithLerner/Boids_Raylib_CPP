@@ -27,7 +27,7 @@ int main(int argc, char* argv[])
 
     Bounds bounds = { Vector3{ 0.0f, 0.0f, 0.0f }, Vector3{ 10.0f, 10.0f, 10.0f } };
 	GridBins gridBins(bounds, 2);
-	const int spawnCount = 10;
+	const int spawnCount = 5000;
 
 	std::array<Boid, spawnCount> boids;
 
@@ -56,7 +56,7 @@ int main(int argc, char* argv[])
 
     DisableCursor();                    // Limit cursor to relative movement inside the window
 
-    SetTargetFPS(144);                   // Set our game to run at 60 frames-per-second
+    SetTargetFPS(200);                   // Set our game to run at 60 frames-per-second
     //--------------------------------------------------------------------------------------
 
     // Main game loop
@@ -113,9 +113,11 @@ int main(int argc, char* argv[])
         for (int i = 0; i < spawnCount; i++)
         {
 			Vector3 pos = boids[i].position;
+			Vector3 vel = boids[i].velocity;
 
-            DrawCircle3D(pos, .5f, Vector3{ 0.0f, 1.0f, 0.0f }, 
-                (float)GetTime() * (180.0f + i), BLUE);
+            //Vector3 lineEnd = pos - Vector3Scale(Vector3Normalize(vel), GetFrameTime() * Boid::maxSpeed);
+            //DrawLine3D(pos, lineEnd, RED);
+			DrawSphereEx(pos, 0.2f, 2, 4, BLUE);
         }
 
         DrawGrid(gridBins.Density(), gridBins.BinSize().x);
