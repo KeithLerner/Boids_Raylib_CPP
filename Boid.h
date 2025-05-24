@@ -1,5 +1,6 @@
 #pragma once
 #include <vector>
+#include <iostream>
 #include "raylib.h"
 #include "raymath.h"
 #include "Bounds.h"
@@ -21,11 +22,13 @@ public:
 
 	void Movement(std::vector<Boid> neighbors, Bounds bounds)
 	{
+        // Set base values for boid rules
         Vector3 alignment =  { 0.0f, 0.0f, 0.0f };
         Vector3 cohesion =   { 0.0f, 0.0f, 0.0f };
         Vector3 separation = { 0.0f, 0.0f, 0.0f };
         Vector3 seekCenter = { 0.0f, 0.0f, 0.0f };
 
+		// Loop through neighbors and sum effect of rules
         int count = 0;
         for (size_t i = 0; i < neighbors.size(); i++)
         {
@@ -43,12 +46,20 @@ public:
 			count++;
         }
 
-        float dist =
-            Vector3Distance(position, bounds.Center());
-        if (dist > Vector3Length(bounds.Extents()) / 2)
-            seekCenter += 
-            Vector3Normalize(bounds.Center() - position) * maxSpeed;
+        // Apply unique rule for avoiding edges of the simulation
+        Vector3 extents = bounds.Extents();
+        Vector3 center = bounds.Center();
+        Vector3 toCenter = bounds.Center() - position;
+        if (position.x >= (center.x + extents.x) * .9f || 
+            position.x <= (center.x - extents.x) * .9f ||
+            position.y >= (center.y + extents.y) * .9f ||
+            position.y <= (center.y - extents.y) * .9f ||
+            position.z >= (center.z + extents.z) * .9f ||
+            position.z <= (center.z - extents.z) * .9f)
+			seekCenter += toCenter;
+        seekCenter = Vector3Normalize(seekCenter) * maxSpeed;
 
+        // Average boid rule data and normlize vectors to a set magnitude
         if (count > 0)
         {
             alignment = Vector3Normalize(alignment / count) * maxSpeed;
@@ -56,14 +67,16 @@ public:
             separation = Vector3Normalize(separation) * maxSpeed;
         }
 
+        // Caclulate new velocity
         float deltaTime = GetFrameTime();
-
-        velocity += (alignment * alignmentWeight +
-            cohesion * cohesionWeight +
+        velocity += (
+            alignment  * alignmentWeight +
+            cohesion   * cohesionWeight +
             separation * separationWeight +
             seekCenter * avoidEdgesWeight) * deltaTime;
         velocity = Vector3Normalize(velocity) * maxSpeed;
 
+		// Apply velocity to position
         position += velocity * deltaTime;
 	}
 
@@ -73,23 +86,23 @@ public:
 
 		Vector3 min = bounds.Min();
 		Vector3 max = bounds.Max();
+        Vector3 fix = Vector3Scale(bounds.Size(), 0.1f);
 
         Vector3 newPos = position;
-        if (position.x >= max.x)
-            newPos.x = min.x + 1;
+
+		if (position.x >= max.x)
+            position.x = min.x + fix.x;
         if (position.y >= max.y)
-            newPos.y = min.y + 1;
+            position.y = min.y + fix.y;
         if (position.z >= max.z)
-            newPos.z = min.z + 1;
+            position.z = min.z + fix.z;
 
         if (position.x <= min.x)
-            newPos.x = max.x - 1;
+            position.x = max.x - fix.x;
         if (position.y <= min.y)
-            newPos.y = max.y - 1;
+            position.y = max.y - fix.y;
         if (position.z <= min.z)
-            newPos.z = max.z - 1;
-
-        position = newPos;
+            position.z = max.z - fix.z;
     }
 };
 

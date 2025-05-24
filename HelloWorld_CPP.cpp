@@ -13,24 +13,22 @@ int main(int argc, char* argv[])
     const int screenWidth = 800;
     const int screenHeight = 450;
 
-    InitWindow(screenWidth, screenHeight, "raylib [core] example - 3d camera free");
+    InitWindow(screenWidth, screenHeight, "raylib boids - Keith Lerner");
+
+    Bounds bounds = { Vector3{ 0.0f, 0.0f, 0.0f }, Vector3One() * 500 };
+    GridBins gridBins(bounds, 2);
+    const int spawnCount = 1000;
 
     // Define the camera to look into our 3d world
     Camera3D camera = { 0 };
-    camera.position = Vector3{ 10.0f, 10.0f, 10.0f }; // Camera position
-    camera.target = Vector3{ 0.0f, 0.0f, 0.0f };      // Camera looking at point
-    camera.up = Vector3{ 0.0f, 1.0f, 0.0f };          // Camera up vector (rotation towards target)
-    camera.fovy = 45.0f;                                // Camera field-of-view Y
+    camera.position = bounds.Max() + bounds.Extents();  // Camera position
+    camera.target = bounds.Center();                    // Camera looking at point
+    camera.up = Vector3{ 0.0f, 1.0f, 0.0f };            // Camera up vector (rotation towards target)
+    camera.fovy = 60.0f;                                // Camera field-of-view Y
     camera.projection = CAMERA_PERSPECTIVE;             // Camera projection type
 
-    Vector3 cubePosition = { 0.0f, 0.0f, 0.0f };
-
-    Bounds bounds = { Vector3{ 0.0f, 0.0f, 0.0f }, Vector3{ 10.0f, 10.0f, 10.0f } };
-	GridBins gridBins(bounds, 2);
-	const int spawnCount = 5000;
-
+    // Spawn boids for management
 	std::array<Boid, spawnCount> boids;
-
     for (int i = 0; i < spawnCount; i++)
     {
 		Vector3 pos = 
@@ -66,7 +64,11 @@ int main(int argc, char* argv[])
         //----------------------------------------------------------------------------------
         UpdateCamera(&camera, CAMERA_FREE);
 
-        if (IsKeyPressed('Z')) camera.target = Vector3{ 0.0f, 0.0f, 0.0f };
+        if (IsKeyPressed('Z')) 
+        {
+            camera.position = bounds.Max() + (bounds.Extents() / 2);
+            camera.target = bounds.Center();
+        }
 
         // Update Boids
         for (int i = 0; i < spawnCount; i++)
@@ -77,9 +79,18 @@ int main(int argc, char* argv[])
             int binArrayIndex = gridBins.WorldPosToArrayIndex(pos);
 			if (binArrayIndex < 0) continue;
 
-            std::vector<Boid> neighbors = gridBins.Bins()[binArrayIndex]; // THROWS INDEX OUT OF RANGE
+            std::vector<Boid> neighbors = std::vector<Boid>{}; // THROWS INDEX OUT OF RANGE
 
-            std::vector<int> searchBins = gridBins.GetNeighborBinIndices(binArrayIndex);
+            for (size_t j = 0; j < boids.size(); j++)
+            {
+                if (boids[j].id == boid.id) continue;
+
+                if (Vector3Distance(boids[j].position, boid.position) <=
+                    boid.senseDistance)
+                    neighbors.push_back(boids[j]);
+            }
+
+            /*std::vector<int> searchBins = gridBins.GetNeighborBinIndices(binArrayIndex);
 
             for (size_t j = 0; j < searchBins.size(); j++)
             {
@@ -94,11 +105,11 @@ int main(int argc, char* argv[])
                         boid.senseDistance)
 						neighbors.push_back(binBoids[k]);
                 }
-            }
+            }*/
 
 			// Update the boid's data
-			boids[i].FixToBounds(bounds);
 			boids[i].Movement(neighbors, bounds);
+			boids[i].FixToBounds(bounds);
         }
         //----------------------------------------------------------------------------------
 
@@ -106,7 +117,7 @@ int main(int argc, char* argv[])
         //----------------------------------------------------------------------------------
         BeginDrawing();
 
-        ClearBackground(RAYWHITE);
+        ClearBackground(Color{ 35, 35, 35, 255 });
 
         BeginMode3D(camera);
 
@@ -117,10 +128,25 @@ int main(int argc, char* argv[])
 
             //Vector3 lineEnd = pos - Vector3Scale(Vector3Normalize(vel), GetFrameTime() * Boid::maxSpeed);
             //DrawLine3D(pos, lineEnd, RED);
-			DrawSphereEx(pos, 0.2f, 2, 4, BLUE);
+
+			bool inBounds = bounds.Contains(pos);
+			Vector3 normalizedVel = Vector3Normalize(vel);
+			
+			float r = Vector3DotProduct(normalizedVel, Vector3{ 1.0f, 0.0f, 0.0f });
+			float g = Vector3DotProduct(normalizedVel, Vector3{ 0.0f, 1.0f, 0.0f });
+			float b = Vector3DotProduct(normalizedVel, Vector3{ 0.0f, 0.0f, 1.0f });
+
+            Color color = Color{ 
+                (unsigned char)(r * 255), 
+                (unsigned char)(g * 255),
+                (unsigned char)(b * 255),
+                255 };
+
+            DrawSphereEx(pos, 1.0f, 8, 8, (inBounds ? color : BLACK));
         }
 
-        DrawGrid(gridBins.Density(), gridBins.BinSize().x);
+        //DrawGrid(gridBins.Density(), gridBins.BinSize().x);
+        DrawCubeWiresV(bounds.Center(), bounds.Size(), Color{ 128, 128, 128, 128 });
 
         EndMode3D();
 
