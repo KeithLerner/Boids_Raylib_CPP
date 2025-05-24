@@ -66,7 +66,7 @@ int main(int argc, char* argv[])
 
         if (IsKeyPressed('Z')) 
         {
-            camera.position = bounds.Max() + (bounds.Extents() / 2);
+            camera.position = bounds.Max() + (bounds.Extents() / 4);
             camera.target = bounds.Center();
         }
 
