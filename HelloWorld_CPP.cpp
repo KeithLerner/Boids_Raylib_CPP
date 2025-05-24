@@ -10,13 +10,13 @@ int main(int argc, char* argv[])
 {
     // Initialization
     //--------------------------------------------------------------------------------------
-    const int screenWidth = 800;
-    const int screenHeight = 450;
+    const int screenWidth = 1600;
+    const int screenHeight = 900;
 
     InitWindow(screenWidth, screenHeight, "raylib boids - Keith Lerner");
 
-    Bounds bounds = { Vector3{ 0.0f, 0.0f, 0.0f }, Vector3One() * 500 };
     //GridBins gridBins(bounds, 2);
+    Bounds bounds = { Vector3{ 0.0f, 0.0f, 0.0f }, Vector3One() * 360 };
     const int spawnCount = 1000;
 
     // Define the camera to look into our 3d world
