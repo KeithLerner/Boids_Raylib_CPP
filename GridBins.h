@@ -4,11 +4,11 @@
 #include <math.h>
 #include "Bounds.h"
 
-class GridBins
+template <typename T> class GridBins
 {
 
 private:
-	std::vector<std::vector<Boid>> bins;
+	std::vector<std::vector<T>> bins;
 	Bounds bounds;
 	const Vector3 binSize;
 	const int binDensity = 10;
@@ -28,13 +28,13 @@ public:
 			{
 				for (int k = 0; k < density; ++k)
 				{
-					bins.push_back(std::vector<Boid>());
+					bins.push_back(std::vector<T>());
 				}
 			}
 		}
 	}
 
-	std::vector<std::vector<Boid>> Bins()
+	std::vector<std::vector<T>> Bins()
 	{
 		return bins;
 	}
@@ -103,10 +103,17 @@ public:
 		return Vector3{ x, y, z };
 	}
 	*/
-	std::vector<int> GetNeighborBinIndices(int index)
+
+	/// <summary>
+	/// Get the indices of bins directly surrounding the given bin index.
+	/// </summary>
+	/// <param name="index"> The index of the bin to query neighbors of. </param>
+	/// <returns> A vector containing </returns>
+	std::vector<int> GetNeighborBinIndices(int index, bool includeIndexedBin)
 	{
 		std::vector<int> results = std::vector<int>();
 
+		// TODO: Check conversion works as intended
 		int ix = index % binDensity;
 		int iy = index / binDensity % binDensity;
 		int iz = index / (binDensity * binDensity);
@@ -117,6 +124,10 @@ public:
 			{
 				for (int z = iz - 1; z <= iz + 1; z++)
 				{
+					// Skip the indexed bin if not included
+					if (!includeIndexedBin && x == ix && y == iy && z == iz) 
+						continue;
+
 					// Check that modified index exists within grid space before
 					// adding to results
 					if (x < binDensity - 2 && x > 0 &&

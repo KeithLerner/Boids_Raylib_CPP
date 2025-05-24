@@ -16,7 +16,7 @@ int main(int argc, char* argv[])
     InitWindow(screenWidth, screenHeight, "raylib boids - Keith Lerner");
 
     Bounds bounds = { Vector3{ 0.0f, 0.0f, 0.0f }, Vector3One() * 500 };
-    GridBins gridBins(bounds, 2);
+    //GridBins gridBins(bounds, 2);
     const int spawnCount = 1000;
 
     // Define the camera to look into our 3d world
@@ -76,8 +76,8 @@ int main(int argc, char* argv[])
 			Boid boid = boids[i];
             Vector3 pos = boid.position;
 
-            int binArrayIndex = gridBins.WorldPosToArrayIndex(pos);
-			if (binArrayIndex < 0) continue;
+            /*int binArrayIndex = gridBins.WorldPosToArrayIndex(pos);
+			if (binArrayIndex < 0) continue;*/
 
             std::vector<Boid> neighbors = std::vector<Boid>{}; // THROWS INDEX OUT OF RANGE
 
@@ -142,7 +142,8 @@ int main(int argc, char* argv[])
                 (unsigned char)(b * 255),
                 255 };
 
-            DrawSphereEx(pos, 1.0f, 8, 8, (inBounds ? color : BLACK));
+            DrawCapsule(pos, pos - normalizedVel * 2.0f, 1.0f, 2, 4, 
+                (inBounds ? color : BLACK));
         }
 
         //DrawGrid(gridBins.Density(), gridBins.BinSize().x);
