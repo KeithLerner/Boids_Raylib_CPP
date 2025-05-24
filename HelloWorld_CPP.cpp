@@ -5,9 +5,14 @@
 #include "Bounds.h"
 #include "GridBins.h"
 #include "Boid.h"
+#include "Tests.h"
 
 int main(int argc, char* argv[])
 {
+	Tests::TestRandomGridBinCoordinates(10, Vector3{ 0, 0, 0 }, 10);
+
+    return 0;
+
     // Initialization
     //--------------------------------------------------------------------------------------
     const int screenWidth = 1600;

@@ -165,11 +165,13 @@
     <ClCompile Include="Bounds.cpp" />
     <ClCompile Include="GridBins.cpp" />
     <ClCompile Include="HelloWorld_CPP.cpp" />
+    <ClCompile Include="Tests.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Boid.h" />
     <ClInclude Include="Bounds.h" />
     <ClInclude Include="GridBins.h" />
+    <ClInclude Include="Tests.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

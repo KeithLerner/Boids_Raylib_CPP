@@ -13,7 +13,6 @@ protected:
 	const Vector3 binSize;
 	const int binDensity = 10;
 
-
 public:
 	GridBins(Bounds bounds, int density)
 		: bounds(bounds),
@@ -47,6 +46,57 @@ public:
 	Vector3 BinSize() 
 	{
 		return binSize;
+	}
+
+	void AddToBin(int binIndex, T item)
+	{
+		if (binIndex < 0 || binIndex >= bins.size()) return;
+
+		bins[binIndex].push_back(item);
+	}
+
+	void RemoveFromBin(int binIndex, T item)
+	{
+		if (binIndex < 0 || binIndex >= bins.size()) return;
+
+		std::vector<T>& bin = bins[binIndex];
+		T foundItem = std::remove(bin.begin(), bin.end(), item);
+		if (foundItem != bin.end())
+		{
+			bin.erase(foundItem, bin.end());
+		}
+	}
+
+	Vector3 GetBinMin(int binIndex)
+	{
+		if (binIndex < 0 || binIndex >= bins.size()) return Vector3{ -1, -1, -1 };
+
+		int x = binIndex % binDensity;
+		int y = binIndex / binDensity % binDensity;
+		int z = binIndex / (binDensity * binDensity);
+
+		return Vector3
+		{
+			bounds.Min().x + x * binSize.x,
+			bounds.Min().y + y * binSize.y,
+			bounds.Min().z + z * binSize.z
+		};
+	}
+
+	Vector3 GetBinMax(int binIndex)
+	{
+		if (binIndex < 0 || binIndex >= bins.size()) return Vector3{ -1, -1, -1 };
+
+		int x = binIndex % binDensity;
+		int y = binIndex / binDensity % binDensity;
+		int z = binIndex / (binDensity * binDensity);
+
+		return Vector3
+		{
+			bounds.Min().x + (x + 1) * binSize.x,
+			bounds.Min().y + (y + 1) * binSize.y,
+			bounds.Min().z + (z + 1) * binSize.z
+		};
 	}
 
 	/// <summary>
