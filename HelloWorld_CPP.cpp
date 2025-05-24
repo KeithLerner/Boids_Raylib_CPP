@@ -15,7 +15,6 @@ int main(int argc, char* argv[])
 
     InitWindow(screenWidth, screenHeight, "raylib boids - Keith Lerner");
 
-    //GridBins gridBins(bounds, 2);
     Bounds bounds = { Vector3{ 0.0f, 0.0f, 0.0f }, Vector3One() * 360 };
     const int spawnCount = 1000;
 
@@ -28,6 +27,7 @@ int main(int argc, char* argv[])
     camera.projection = CAMERA_PERSPECTIVE;             // Camera projection type
 
     // Spawn boids for management
+    GridBins<Boid> gridBins = GridBins<Boid>(bounds, 2);
 	std::array<Boid, spawnCount> boids;
     for (int i = 0; i < spawnCount; i++)
     {
@@ -76,7 +76,7 @@ int main(int argc, char* argv[])
 			Boid boid = boids[i];
             Vector3 pos = boid.position;
 
-            /*int binArrayIndex = gridBins.WorldPosToArrayIndex(pos);
+            /*int binArrayIndex = gridBins.WorldPosToVectorIndex(pos);
 			if (binArrayIndex < 0) continue;*/
 
             std::vector<Boid> neighbors = std::vector<Boid>{}; // THROWS INDEX OUT OF RANGE

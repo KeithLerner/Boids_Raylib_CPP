@@ -7,7 +7,7 @@
 template <typename T> class GridBins
 {
 
-private:
+protected:
 	std::vector<std::vector<T>> bins;
 	Bounds bounds;
 	const Vector3 binSize;
@@ -50,12 +50,12 @@ public:
 	}
 
 	/// <summary>
-	/// Convert a world position into a grid bin array index coordinate.
+	/// Convert a world position into a grid bin vector index coordinate.
 	/// </summary>
 	/// <param name="worldPosition"> The query position. </param>
 	/// <returns> -1 if invalid input given or calculated index is outside array range, 
 	/// otherwise returns a valid index to a bin in the grid. </returns>
-	int WorldPosToArrayIndex(Vector3 worldPosition)
+	int WorldPosToVectorIndex(Vector3 worldPosition)
 	{
 		if (!bounds.Contains(worldPosition)) return -1;
 
@@ -67,7 +67,9 @@ public:
 
 		return i;
 	}
-	/*
+
+	/* 
+	// ===== BIN INDICES ARE NOT USED, ONLY WORLD POSITION AND ARRAY INDEX =====
 	Vector3 WorldPosToBinIndex(Vector3 worldPosition)
 	{
 		if (!bounds.Contains(worldPosition)) return Vector3{ -1, -1, -1 };
