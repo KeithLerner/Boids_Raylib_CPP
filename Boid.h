@@ -107,12 +107,10 @@ public:
             position.z = max.z - fix.z;
     }
 
-	void UpdateBinIndex(GridBins<Boid> gridBins)
+	void UpdateBinIndex(int calculatedBinIndex)
 	{
-        int bI = gridBins.WorldPosToVectorIndex(position);
-		if (bI < 0 || bI >= gridBins.Bins().size()) return;
-        if (bI == binIndex) return;
-        binIndex = bI;
+        if (calculatedBinIndex == binIndex) return;
+        binIndex = calculatedBinIndex;
 	}
 };
 

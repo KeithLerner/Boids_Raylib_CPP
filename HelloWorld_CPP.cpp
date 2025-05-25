@@ -9,10 +9,9 @@
 
 int main(int argc, char* argv[])
 {
-	Tests::TestRandomGridBinCoordinates(1000, Vector3One() * 100, 10);
+	//Tests::TestRandomGridBinCoordinates(1000, Vector3One() * 100, 10);
     //Tests::TestSetGridBinCoordinates();
-
-    return 0;
+    //return 0;
 
     // Initialization
     //--------------------------------------------------------------------------------------
@@ -21,8 +20,8 @@ int main(int argc, char* argv[])
 
     InitWindow(screenWidth, screenHeight, "raylib boids - Keith Lerner");
 
-    Bounds bounds = { Vector3{ 0.0f, 0.0f, 0.0f }, Vector3One() * 360 };
-    const int spawnCount = 1000;
+    Bounds bounds = { Vector3{ 0.0f, 0.0f, 0.0f }, Vector3One() * 200 };
+    const int spawnCount = 100;
 
     // Define the camera to look into our 3d world
     Camera3D camera = { 0 };
@@ -33,7 +32,7 @@ int main(int argc, char* argv[])
     camera.projection = CAMERA_PERSPECTIVE;             // Camera projection type
 
     // Spawn boids for management
-    GridBins<Boid *> gridBins = GridBins<Boid *>(bounds, 2);
+    GridBins<Boid *> gridBins = GridBins<Boid *>(bounds, 16);
 	std::array<Boid, spawnCount> boids;
     for (int i = 0; i < spawnCount; i++)
     {
@@ -116,6 +115,10 @@ int main(int argc, char* argv[])
 			// Update the boid's data
 			boids[i].Movement(neighbors, bounds);
 			boids[i].FixToBounds(bounds);
+            /*int calculatedBinIndex = gridBins.WorldPosToVectorIndex(boid.position);
+			if (calculatedBinIndex < 0 || calculatedBinIndex >= gridBins.Bins().size())
+				continue;
+			boids[i].UpdateBinIndex(calculatedBinIndex);*/
         }
         //----------------------------------------------------------------------------------
 
@@ -150,6 +153,16 @@ int main(int argc, char* argv[])
 
             DrawCapsule(pos, pos - normalizedVel * 2.0f, 1.0f, 2, 4, 
                 (inBounds ? color : BLACK));
+
+            continue; // COMMENT THIS LINE TO DRAW BIN OF BOID 0
+			if (i != 0) continue;
+			int calculatedBinIndex = gridBins.WorldPosToVectorIndex(pos);
+			if (calculatedBinIndex < 0 || calculatedBinIndex >= gridBins.Bins().size())
+				DrawSphere(pos, 3.0f, RAYWHITE);
+			Vector3 debugBoxSize = gridBins.BinSize();
+			Vector3 debugBoxCenter = 
+                gridBins.GetBinMin(calculatedBinIndex) + debugBoxSize / 2;
+			DrawCubeWiresV(debugBoxCenter, debugBoxSize, YELLOW);
         }
 
         //DrawGrid(gridBins.Density(), gridBins.BinSize().x);
