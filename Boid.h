@@ -4,6 +4,7 @@
 #include "raylib.h"
 #include "raymath.h"
 #include "Bounds.h"
+#include "GridBins.h"
 
 struct Boid
 {	
@@ -11,6 +12,7 @@ public:
     int id;
 	Vector3 position;
 	Vector3 velocity;
+	int binIndex;
 
 	static float maxSpeed;
 	static float alignmentWeight;
@@ -104,5 +106,13 @@ public:
         if (position.z <= min.z)
             position.z = max.z - fix.z;
     }
+
+	void UpdateBinIndex(GridBins<Boid> gridBins)
+	{
+        int bI = gridBins.WorldPosToVectorIndex(position);
+		if (bI < 0 || bI >= gridBins.Bins().size()) return;
+        if (bI == binIndex) return;
+        binIndex = bI;
+	}
 };
 
