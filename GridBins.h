@@ -108,12 +108,12 @@ public:
 	/// otherwise returns a valid index to a bin in the grid. </returns>
 	int WorldPosToVectorIndex(Vector3 worldPosition)
 	{
-		if (!bounds.Contains(worldPosition)) return -1;
+		if (!bounds.Contains(worldPosition, false)) return -1;
 
 		float halfBinDensity = .5f * binDensity;
-		int i = (int)floorf(halfBinDensity + worldPosition.x / binSize.x) +
-			    (int)floorf(halfBinDensity + worldPosition.y / binSize.y) * binDensity +
-				(int)floorf(halfBinDensity + worldPosition.z / binSize.z) * binDensity * binDensity;
+		int i = (int)floorf(halfBinDensity + (worldPosition.x / binSize.x)) +
+				(int)floorf(halfBinDensity + (worldPosition.y / binSize.y)) * binDensity +
+				(int)floorf(halfBinDensity + (worldPosition.z / binSize.z)) * binDensity * binDensity;
 
 		if (i < 0 || i >= bins.size()) return -2; 
 

@@ -9,8 +9,8 @@
 
 int main(int argc, char* argv[])
 {
-	//Tests::TestRandomGridBinCoordinates(100, Vector3One() * 100, 10);
-    Tests::TestSetGridBinCoordinates();
+	Tests::TestRandomGridBinCoordinates(1000, Vector3One() * 100, 10);
+    //Tests::TestSetGridBinCoordinates();
 
     return 0;
 
