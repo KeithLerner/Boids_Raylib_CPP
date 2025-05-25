@@ -103,17 +103,19 @@ public:
 	/// Convert a world position into a grid bin vector index coordinate.
 	/// </summary>
 	/// <param name="worldPosition"> The query position. </param>
-	/// <returns> -1 if invalid input given or calculated index is outside array range, 
+	/// <returns> -1 if input world position is outside the bounds of the bins, 
+	/// -2 if calculated index is outside array range, 
 	/// otherwise returns a valid index to a bin in the grid. </returns>
 	int WorldPosToVectorIndex(Vector3 worldPosition)
 	{
 		if (!bounds.Contains(worldPosition)) return -1;
 
-		int i = (int)floorf(.5f * binDensity + worldPosition.x / binSize.x) +
-			    (int)floorf(.5f * binDensity + worldPosition.y / binSize.y) * binDensity +
-			    (int)floorf(.5f * binDensity + worldPosition.z / binSize.z) * binDensity * binDensity;
+		float halfBinDensity = .5f * binDensity;
+		int i = (int)floorf(halfBinDensity + worldPosition.x / binSize.x) +
+			    (int)floorf(halfBinDensity + worldPosition.y / binSize.y) * binDensity +
+				(int)floorf(halfBinDensity + worldPosition.z / binSize.z) * binDensity * binDensity;
 
-		if (i < 0 || i >= bins.size()) return -1;
+		if (i < 0 || i >= bins.size()) return -2; 
 
 		return i;
 	}

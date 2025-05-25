@@ -9,7 +9,8 @@
 
 int main(int argc, char* argv[])
 {
-	Tests::TestRandomGridBinCoordinates(10, Vector3{ 0, 0, 0 }, 10);
+	//Tests::TestRandomGridBinCoordinates(100, Vector3One() * 100, 10);
+    Tests::TestSetGridBinCoordinates();
 
     return 0;
 
@@ -32,7 +33,7 @@ int main(int argc, char* argv[])
     camera.projection = CAMERA_PERSPECTIVE;             // Camera projection type
 
     // Spawn boids for management
-    GridBins<Boid> gridBins = GridBins<Boid>(bounds, 2);
+    GridBins<Boid *> gridBins = GridBins<Boid *>(bounds, 2);
 	std::array<Boid, spawnCount> boids;
     for (int i = 0; i < spawnCount; i++)
     {
