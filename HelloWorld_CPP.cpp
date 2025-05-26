@@ -146,9 +146,9 @@ int main(int argc, char* argv[])
 			float b = Vector3DotProduct(normalizedVel, Vector3{ 0.0f, 0.0f, 1.0f });
 
             Color color = Color{ 
-                (unsigned char)(r * 255), 
-                (unsigned char)(g * 255),
-                (unsigned char)(b * 255),
+                (unsigned char)(r * 127 + 128), 
+                (unsigned char)(g * 127 + 128),
+                (unsigned char)(b * 127 + 128),
                 255 };
 
             DrawCapsule(pos, pos - normalizedVel * 2.0f, 1.0f, 2, 4, 
