@@ -1,0 +1,98 @@
+﻿  Main.cpp
+C:\Users\keith\GitHub\Boids_Raylib_CPP\Boid.h(67,54): warning C4244: 'argument': conversion from 'int' to 'const float', possible loss of data
+  (compiling source file 'Main.cpp')
+  
+C:\Users\keith\GitHub\Boids_Raylib_CPP\Boid.h(68,52): warning C4244: 'argument': conversion from 'int' to 'const float', possible loss of data
+  (compiling source file 'Main.cpp')
+  
+C:\Users\keith\GitHub\Boids_Raylib_CPP\Tests.h(30,37): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+  (compiling source file 'Main.cpp')
+  
+C:\Users\keith\GitHub\Boids_Raylib_CPP\Tests.h(30,30): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+  (compiling source file 'Main.cpp')
+  
+C:\Users\keith\GitHub\Boids_Raylib_CPP\Tests.h(31,37): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+  (compiling source file 'Main.cpp')
+  
+C:\Users\keith\GitHub\Boids_Raylib_CPP\Tests.h(31,30): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+  (compiling source file 'Main.cpp')
+  
+C:\Users\keith\GitHub\Boids_Raylib_CPP\Tests.h(32,37): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+  (compiling source file 'Main.cpp')
+  
+C:\Users\keith\GitHub\Boids_Raylib_CPP\Tests.h(32,30): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+  (compiling source file 'Main.cpp')
+  
+C:\Users\keith\GitHub\Boids_Raylib_CPP\Tests.h(35,27): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+  (compiling source file 'Main.cpp')
+  
+C:\Users\keith\GitHub\Boids_Raylib_CPP\Tests.h(35,20): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+  (compiling source file 'Main.cpp')
+  
+C:\Users\keith\GitHub\Boids_Raylib_CPP\Tests.h(36,27): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+  (compiling source file 'Main.cpp')
+  
+C:\Users\keith\GitHub\Boids_Raylib_CPP\Tests.h(36,20): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+  (compiling source file 'Main.cpp')
+  
+C:\Users\keith\GitHub\Boids_Raylib_CPP\Tests.h(37,27): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+  (compiling source file 'Main.cpp')
+  
+C:\Users\keith\GitHub\Boids_Raylib_CPP\Tests.h(37,20): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+  (compiling source file 'Main.cpp')
+  
+C:\Users\keith\GitHub\Boids_Raylib_CPP\Tests.h(77,61): warning C4244: 'argument': conversion from 'int' to 'const float', possible loss of data
+  (compiling source file 'Main.cpp')
+  
+C:\Users\keith\GitHub\Boids_Raylib_CPP\Tests.h(102,21): warning C4018: '<': signed/unsigned mismatch
+  (compiling source file 'Main.cpp')
+  
+C:\Users\keith\GitHub\Boids_Raylib_CPP\Main.cpp(41,56): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+C:\Users\keith\GitHub\Boids_Raylib_CPP\Main.cpp(41,40): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+C:\Users\keith\GitHub\Boids_Raylib_CPP\Main.cpp(42,56): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+C:\Users\keith\GitHub\Boids_Raylib_CPP\Main.cpp(42,40): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+C:\Users\keith\GitHub\Boids_Raylib_CPP\Main.cpp(43,56): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+C:\Users\keith\GitHub\Boids_Raylib_CPP\Main.cpp(43,40): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+C:\Users\keith\GitHub\Boids_Raylib_CPP\Main.cpp(41,27): warning C4838: conversion from 'int' to 'float' requires a narrowing conversion
+C:\Users\keith\GitHub\Boids_Raylib_CPP\Main.cpp(41,27): warning C4244: 'initializing': conversion from 'int' to 'float', possible loss of data
+C:\Users\keith\GitHub\Boids_Raylib_CPP\Main.cpp(42,27): warning C4838: conversion from 'int' to 'float' requires a narrowing conversion
+C:\Users\keith\GitHub\Boids_Raylib_CPP\Main.cpp(42,27): warning C4244: 'initializing': conversion from 'int' to 'float', possible loss of data
+C:\Users\keith\GitHub\Boids_Raylib_CPP\Main.cpp(43,27): warning C4838: conversion from 'int' to 'float' requires a narrowing conversion
+C:\Users\keith\GitHub\Boids_Raylib_CPP\Main.cpp(43,27): warning C4244: 'initializing': conversion from 'int' to 'float', possible loss of data
+C:\Users\keith\GitHub\Boids_Raylib_CPP\Main.cpp(48,27): warning C4838: conversion from 'int' to 'float' requires a narrowing conversion
+C:\Users\keith\GitHub\Boids_Raylib_CPP\Main.cpp(48,27): warning C4244: 'initializing': conversion from 'int' to 'float', possible loss of data
+C:\Users\keith\GitHub\Boids_Raylib_CPP\Main.cpp(49,27): warning C4838: conversion from 'int' to 'float' requires a narrowing conversion
+C:\Users\keith\GitHub\Boids_Raylib_CPP\Main.cpp(49,27): warning C4244: 'initializing': conversion from 'int' to 'float', possible loss of data
+C:\Users\keith\GitHub\Boids_Raylib_CPP\Main.cpp(50,27): warning C4838: conversion from 'int' to 'float' requires a narrowing conversion
+C:\Users\keith\GitHub\Boids_Raylib_CPP\Main.cpp(50,27): warning C4244: 'initializing': conversion from 'int' to 'float', possible loss of data
+C:\Users\keith\GitHub\Boids_Raylib_CPP\Main.cpp(160,53): warning C4018: '>=': signed/unsigned mismatch
+C:\Users\keith\GitHub\Boids_Raylib_CPP\GridBins.h(118,18): warning C4018: '>=': signed/unsigned mismatch
+  (compiling source file 'Main.cpp')
+      C:\Users\keith\GitHub\Boids_Raylib_CPP\GridBins.h(118,18):
+      the template instantiation context (the oldest one first) is
+          C:\Users\keith\GitHub\Boids_Raylib_CPP\Main.cpp(35,22):
+          see reference to class template instantiation 'GridBins<Boid *>' being compiled
+          C:\Users\keith\GitHub\Boids_Raylib_CPP\GridBins.h(109,6):
+          while compiling class template member function 'int GridBins<Boid *>::WorldPosToVectorIndex(Vector3)'
+              C:\Users\keith\GitHub\Boids_Raylib_CPP\Main.cpp(159,27):
+              see the first reference to 'GridBins<Boid *>::WorldPosToVectorIndex' in 'main'
+  
+C:\Users\keith\GitHub\Boids_Raylib_CPP\GridBins.h(72,32): warning C4018: '>=': signed/unsigned mismatch
+  (compiling source file 'Main.cpp')
+      C:\Users\keith\GitHub\Boids_Raylib_CPP\GridBins.h(72,32):
+      the template instantiation context (the oldest one first) is
+          C:\Users\keith\GitHub\Boids_Raylib_CPP\GridBins.h(70,10):
+          while compiling class template member function 'Vector3 GridBins<Boid *>::GetBinMin(int)'
+              C:\Users\keith\GitHub\Boids_Raylib_CPP\Main.cpp(163,27):
+              see the first reference to 'GridBins<Boid *>::GetBinMin' in 'main'
+  
+C:\Users\keith\GitHub\Boids_Raylib_CPP\GridBins.h(88,32): warning C4018: '>=': signed/unsigned mismatch
+  (compiling source file 'Main.cpp')
+      C:\Users\keith\GitHub\Boids_Raylib_CPP\GridBins.h(88,32):
+      the template instantiation context (the oldest one first) is
+          C:\Users\keith\GitHub\Boids_Raylib_CPP\GridBins.h(86,10):
+          while compiling class template member function 'Vector3 GridBins<bool>::GetBinMax(int)'
+              C:\Users\keith\GitHub\Boids_Raylib_CPP\Tests.h(44,30):
+              see the first reference to 'GridBins<bool>::GetBinMax' in 'Tests::TestRandomGridBinCoordinates'
+  
+  HelloWorld_CPP.vcxproj -> C:\Users\keith\GitHub\Boids_Raylib_CPP\Debug\Raylib_Boids_CPP.exe
