@@ -7,7 +7,8 @@ class Bounds
 	const Vector3 _size;
 
 public:
-    Bounds(Vector3 center, Vector3 size) : _center(center), _size(size) {}
+    Bounds(Vector3 center, Vector3 size) : 
+		_center(center), _size(size) {}
 
 	Vector3 Center()
 	{
@@ -27,13 +28,15 @@ public:
 	Vector3 Min() 
 	{
 		Vector3 extents = Extents();
-		return Vector3{ _center.x - extents.x, _center.y - extents.y, _center.z - extents.z };
+		return Vector3{ _center.x - extents.x, 
+			_center.y - extents.y, _center.z - extents.z };
 	}
 
 	Vector3 Max() 
 	{
 		Vector3 extents = Extents();
-		return Vector3{ _center.x + extents.x, _center.y + extents.y, _center.z + extents.z };
+		return Vector3{ _center.x + extents.x, 
+			_center.y + extents.y, _center.z + extents.z };
 	}
 
 	bool Contains(Vector3 point, bool inclusive = true)

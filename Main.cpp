@@ -9,12 +9,7 @@
 
 int main(int argc, char* argv[])
 {
-	//Tests::TestRandomGridBinCoordinates(1000, Vector3One() * 100, 10);
-    //Tests::TestSetGridBinCoordinates();
-    //return 0;
-
     // Initialization
-    //--------------------------------------------------------------------------------------
     const int screenWidth = 1600;
     const int screenHeight = 900;
 
@@ -35,7 +30,10 @@ int main(int argc, char* argv[])
     GridBins<Boid *> gridBins = GridBins<Boid *>(bounds, 16);
 	std::array<Boid, spawnCount> boids;
     for (int i = 0; i < spawnCount; i++)
-    {
+	{
+		// Generate a random position and velocity for each boid.
+		// Position is within the bounds, velocity is normalized and scaled to 
+        // max speed.
 		Vector3 pos = 
         { 
             GetRandomValue(bounds.Min().x, bounds.Max().x), 
@@ -53,29 +51,37 @@ int main(int argc, char* argv[])
         vel = Vector3Normalize(vel);
 		vel = Vector3Scale(vel, Boid::maxSpeed);
 
-		boids[i] = Boid{ i, pos, vel};
+        
+        // Create a boid with the generated position and velocity and add it 
+        // to the grid bins for management.
+        boids[i] = Boid{ i, pos, vel};
+
+        // Note: The grid bins are not used in this example, at the moment 
+        // they decrease performance rather than increase it. Grid bins were 
+        // an idea caried over from the C# for Unity version of this project.
+        //int binIndex = gridBins.WorldPosToVectorIndex(pos);
+        //if (binIndex >= 0 && binIndex < gridBins.Bins().size())
+        //    gridBins.Bins()[binIndex].push_back(boid);
     }
 
 
-    DisableCursor();                    // Limit cursor to relative movement inside the window
+    DisableCursor(); // Limit cursor to relative movement inside the window
 
-    SetTargetFPS(200);                   // Set our game to run at 60 frames-per-second
+    SetTargetFPS(60);  // Set simulation to target 60 frames-per-second
     //--------------------------------------------------------------------------------------
 
     // Main game loop
-    while (!WindowShouldClose())        // Detect window close button or ESC key
+    while (!WindowShouldClose()) // Detect window close button or ESC key
     {
-        // Update
-        //----------------------------------------------------------------------------------
+        // Update the camera and reset camera if requested
         UpdateCamera(&camera, CAMERA_FREE);
-
         if (IsKeyPressed('Z')) 
         {
             camera.position = bounds.Max() + (bounds.Extents() / 4);
             camera.target = bounds.Center();
         }
 
-        // Update Boids
+        // Update all Boids
         for (int i = 0; i < spawnCount; i++)
 		{
 			Boid boid = boids[i];
@@ -84,7 +90,7 @@ int main(int argc, char* argv[])
             /*int binArrayIndex = gridBins.WorldPosToVectorIndex(pos);
 			if (binArrayIndex < 0) continue;*/
 
-            std::vector<Boid> neighbors = std::vector<Boid>{}; // THROWS INDEX OUT OF RANGE
+            std::vector<Boid> neighbors = std::vector<Boid>{};
 
             for (size_t j = 0; j < boids.size(); j++)
             {
@@ -95,8 +101,9 @@ int main(int argc, char* argv[])
                     neighbors.push_back(boids[j]);
             }
 
-            /*std::vector<int> searchBins = gridBins.GetNeighborBinIndices(binArrayIndex);
-
+            // NOTE: Grid bins are not being used. See line64 for further information.
+            /*std::vector<int> searchBins = 
+                gridBins.GetNeighborBinIndices(binArrayIndex);
             for (size_t j = 0; j < searchBins.size(); j++)
             {
 				int arrayIndex = searchBins[j];
@@ -115,45 +122,51 @@ int main(int argc, char* argv[])
 			// Update the boid's data
 			boids[i].Movement(neighbors, bounds);
 			boids[i].FixToBounds(bounds);
+
+            // NOTE: Grid bins are not being used. See line64 for further information.
             /*int calculatedBinIndex = gridBins.WorldPosToVectorIndex(boid.position);
 			if (calculatedBinIndex < 0 || calculatedBinIndex >= gridBins.Bins().size())
 				continue;
 			boids[i].UpdateBinIndex(calculatedBinIndex);*/
         }
-        //----------------------------------------------------------------------------------
 
-        // Draw
-        //----------------------------------------------------------------------------------
-        BeginDrawing();
+        // Start drawing to the window
+        BeginDrawing(); 
 
+		// Clear the window and set the background color
         ClearBackground(Color{ 35, 35, 35, 255 });
 
+        // Start to draw 3D objects with the camera
         BeginMode3D(camera);
 
+		// Loop through all boids and draw them
+		Vector3 pos = { 0.0f, 0.0f, 0.0f };
+		Vector3 vel = { 0.0f, 0.0f, 0.0f };
+		Vector3 normalizedVel = { 0.0f, 0.0f, 0.0f };
+		Color color = { 0, 0, 0, 255 }; // Default color for boids
+		float r = 0.0f, g = 0.0f, b = 0.0f;
         for (int i = 0; i < spawnCount; i++)
         {
-			Vector3 pos = boids[i].position;
-			Vector3 vel = boids[i].velocity;
+            // Get i'th boid's position and velocity 
+			pos = boids[i].position;
+			vel = boids[i].velocity;
 
-            //Vector3 lineEnd = pos - Vector3Scale(Vector3Normalize(vel), GetFrameTime() * Boid::maxSpeed);
-            //DrawLine3D(pos, lineEnd, RED);
-
-			bool inBounds = bounds.Contains(pos);
-			Vector3 normalizedVel = Vector3Normalize(vel);
+            normalizedVel = Vector3Normalize(vel);
 			
-			float r = Vector3DotProduct(normalizedVel, Vector3{ 1.0f, 0.0f, 0.0f });
-			float g = Vector3DotProduct(normalizedVel, Vector3{ 0.0f, 1.0f, 0.0f });
-			float b = Vector3DotProduct(normalizedVel, Vector3{ 0.0f, 0.0f, 1.0f });
+			r = Vector3DotProduct(normalizedVel, Vector3{ 1.0f, 0.0f, 0.0f });
+			g = Vector3DotProduct(normalizedVel, Vector3{ 0.0f, 1.0f, 0.0f });
+			b = Vector3DotProduct(normalizedVel, Vector3{ 0.0f, 0.0f, 1.0f });
 
-            Color color = Color{ 
+            color = Color{ 
                 (unsigned char)(r * 127 + 128), 
                 (unsigned char)(g * 127 + 128),
                 (unsigned char)(b * 127 + 128),
                 255 };
 
-            DrawCapsule(pos, pos - normalizedVel * 2.0f, 1.0f, 2, 4, 
-                (inBounds ? color : BLACK));
+            DrawCapsule(pos, pos - normalizedVel * 2.0f, 1.0f, 2, 4, color);
 
+            // NOTE: The following section was used for debugging grid bins 
+            // which are not in use. See line 64 for more information.
             continue; // COMMENT THIS LINE TO DRAW BIN OF BOID 0
 			if (i != 0) continue;
 			int calculatedBinIndex = gridBins.WorldPosToVectorIndex(pos);
@@ -165,29 +178,30 @@ int main(int argc, char* argv[])
 			DrawCubeWiresV(debugBoxCenter, debugBoxSize, YELLOW);
         }
 
-        //DrawGrid(gridBins.Density(), gridBins.BinSize().x);
+		// Draw the bounds of the simulation
         DrawCubeWiresV(bounds.Center(), bounds.Size(), Color{ 128, 128, 128, 128 });
 
+		// Stop drawing 3D objects
         EndMode3D();
 
-        DrawRectangle(10, 10, 320, 93, Fade(SKYBLUE, 0.5f));
-        DrawRectangleLines(10, 10, 320, 93, BLUE);
+        // Draw UI elements on top of 3D drawings
+        DrawRectangle(10, 10, 320, 93, Fade(RAYWHITE, 0.75f));
+        DrawRectangleLines(10, 10, 320, 93, BLACK);
 
         DrawText("Free camera default controls:", 20, 20, 10, BLACK);
         DrawText("- Mouse Wheel to Zoom in-out", 40, 40, 10, DARKGRAY);
         DrawText("- Mouse Wheel Pressed to Pan", 40, 60, 10, DARKGRAY);
-        DrawText("- Z to zoom to (0, 0, 0)", 40, 80, 10, DARKGRAY);
+        DrawText("- Z to reset camera view", 40, 80, 10, DARKGRAY);
 
-        DrawFPS(10, 10);
+        // Display the current FPS in the top right corner
+		DrawFPS(1500, 20); 
 
+        // Stop drawing to the window
         EndDrawing();
-        //----------------------------------------------------------------------------------
     }
 
     // De-Initialization
-    //--------------------------------------------------------------------------------------
-    CloseWindow();        // Close window and OpenGL context
-    //--------------------------------------------------------------------------------------
+    CloseWindow(); // Close window and OpenGL context
 
     return 0;
 }
